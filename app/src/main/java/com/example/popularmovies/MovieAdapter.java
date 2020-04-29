@@ -39,6 +39,9 @@ public class MovieAdapter extends RecyclerView.Adapter <MovieAdapter.MovieAdapte
           int adapterPosition = getAdapterPosition();
           String movieSelected = mMovieData[adapterPosition];
           Log.d(TAG, movieSelected + " clicked");
+
+          //pass back up to MainActivity.java the movie clicked
+          mClickHandler.onClick(movieSelected);
         }
     }
 
