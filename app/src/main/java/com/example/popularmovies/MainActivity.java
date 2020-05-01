@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -45,6 +48,27 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setAdapter(mMovieAdapter);
 
         loadMovieData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sort_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemSelectedId = item.getItemId();
+
+        if (itemSelectedId == R.id.sort_popular) {
+            Toast.makeText(this, "SORT BY POPULAR SELECTED!!", Toast.LENGTH_LONG).show();
+            return true;
+        } else if (itemSelectedId == R.id.sort_rating) {
+            Toast.makeText(this, "SORT BY RATING SELECTED!!", Toast.LENGTH_LONG).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     //Set movie data list
