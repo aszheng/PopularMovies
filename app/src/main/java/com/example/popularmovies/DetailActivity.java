@@ -59,7 +59,7 @@ public class DetailActivity extends AppCompatActivity {
                             .load(pathToDisplay)
                             .into(mDetailPoster);
                     mDetailTitle.setText(title);
-                    mDetailUserRating.setText(userRating);
+                    mDetailUserRating.setText(userRating + " / 10.0");
                     mDetailReleaseDate.setText(releaseDate);
                     mDetailPlot.setText(overview);
 
