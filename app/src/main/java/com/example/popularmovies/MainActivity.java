@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import com.example.popularmovies.utilities.NetworkUtils;
-import com.example.popularmovies.utilities.TMDB_jsonParser;
+import com.example.popularmovies.utilities.TMDB_jsonUtils;
 
 import org.json.JSONException;
 
@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private MovieAdapter mMovieAdapter;
 
     private TextView mErrorMessageDisplay;
-
-    String[] movieFakeData = new String[] { "Movie A", "Movie B", "Movie C", "Movie D", "Movie E" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mMovieAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mMovieAdapter);
 
-//        mMovieAdapter.setMovieData(movieFakeData);
-//        new FetchMovieDataTask().execute();
         loadMovieData();
     }
 
@@ -99,11 +95,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
             try {
                 String returnData = NetworkUtils.getResponseFromHttpUrl(callingUrl);
-                Log.d(TAG, "!@!@!@!@!" + returnData);
 
-                String[] arr = TMDB_jsonParser.getPopularMovies(MainActivity.this, returnData);
-
-                Log.d(TAG, "!@!@!@!@! doIn bg" + arr[0]);
+                String[] arr = TMDB_jsonUtils.getPopularMovies(MainActivity.this, returnData);
 
                 return arr;
             } catch (IOException | JSONException e) {
@@ -116,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         protected void onPostExecute(String[] popularMovie) {
             if (popularMovie != null) {
                 showMovieDataView();
-                Log.d(TAG, "!@!@!@!@! POST EXECUTE" + popularMovie[0]);
 
                 mMovieAdapter.setMovieData(popularMovie);
             } else {

@@ -11,6 +11,14 @@
         android:layout_height="wrap_content"
         android:padding="16dp"/>
 
+<!--    ImageView for one movie-->
+    <ImageView
+        android:id="@+id/iv_main_movie_poster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Movie Poster"
+        android:scaleType="fitXY" />
+
 <!--    Textview for divider between items-->
     <View
         android:layout_width="match_parent"

@@ -7,11 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+public class TMDB_jsonUtils {
 
-public class TMDB_jsonParser {
-
-    private static final String TAG = TMDB_jsonParser.class.getSimpleName();
+    private static final String TAG = TMDB_jsonUtils.class.getSimpleName();
+    private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/";
+    private static final String POSTER_SIZE = "w185";
 
     public static String[] getPopularMovies (Context context, String fullJsonStr) throws JSONException {
        
@@ -29,5 +29,13 @@ public class TMDB_jsonParser {
         }
         
         return finalPopularMovieData;
+    }
+
+    public static String posterUrl (String path) {
+        //remove "\" from first item of path
+        String moviePath = path.substring(0);
+        String finalPosterUrl = POSTER_BASE_URL + POSTER_SIZE + moviePath;
+
+        return finalPosterUrl;
     }
 }

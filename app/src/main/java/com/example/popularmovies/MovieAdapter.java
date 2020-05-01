@@ -5,12 +5,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.popularmovies.utilities.TMDB_jsonUtils;
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.time.Instant;
 
 public class MovieAdapter extends RecyclerView.Adapter <MovieAdapter.MovieAdapterViewHolder> {
 
@@ -30,10 +36,12 @@ public class MovieAdapter extends RecyclerView.Adapter <MovieAdapter.MovieAdapte
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mMovieTextView;
+        public final ImageView mMovieImageView;
 
         public MovieAdapterViewHolder (View view) {
             super(view);
             mMovieTextView = (TextView) view.findViewById(R.id.tv_movie_data);
+            mMovieImageView = (ImageView) view.findViewById(R.id.iv_main_movie_poster);
             view.setOnClickListener(this);
         }
 
@@ -69,13 +77,17 @@ public class MovieAdapter extends RecyclerView.Adapter <MovieAdapter.MovieAdapte
             JSONObject movieJsonObj = new JSONObject(movieSelected);
 
             String title = movieJsonObj.getString("title");
-            movieAdapterViewHolder.mMovieTextView.setText(position + " :" + title);
+            String path = movieJsonObj.getString("poster_path");
+
+            String pathToDisplay = TMDB_jsonUtils.posterUrl(path);
+
+            Picasso.get()
+                    .load(pathToDisplay)
+                    .into(movieAdapterViewHolder.mMovieImageView);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     @Override
