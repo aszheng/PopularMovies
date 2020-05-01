@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MovieAdapter extends RecyclerView.Adapter <MovieAdapter.MovieAdapterViewHolder> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
@@ -34,6 +37,7 @@ public class MovieAdapter extends RecyclerView.Adapter <MovieAdapter.MovieAdapte
             view.setOnClickListener(this);
         }
 
+        //Past entire movie object string back up to MainActivity (to be passed to DetailActivity)
         @Override
         public void onClick(View v) {
           int adapterPosition = getAdapterPosition();
@@ -56,10 +60,22 @@ public class MovieAdapter extends RecyclerView.Adapter <MovieAdapter.MovieAdapte
         return new MovieAdapterViewHolder(view);
     }
 
+    //Set Movie Poster Here:
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder movieAdapterViewHolder, int position) {
         String movieSelected = mMovieData[position];
-        movieAdapterViewHolder.mMovieTextView.setText(movieSelected);
+
+        try {
+            JSONObject movieJsonObj = new JSONObject(movieSelected);
+
+            String title = movieJsonObj.getString("title");
+            movieAdapterViewHolder.mMovieTextView.setText(position + " :" + title);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     @Override
