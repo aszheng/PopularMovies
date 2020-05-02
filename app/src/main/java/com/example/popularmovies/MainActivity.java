@@ -29,8 +29,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
-
     private TextView mErrorMessageDisplay;
+
+    private String currentSortOption = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mRecyclerView.setAdapter(mMovieAdapter);
 
+        currentSortOption = "popular"; //default
         loadMovieData();
     }
 
@@ -61,10 +63,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         int itemSelectedId = item.getItemId();
 
         if (itemSelectedId == R.id.sort_popular) {
-            Toast.makeText(this, "SORT BY POPULAR SELECTED!!", Toast.LENGTH_LONG).show();
+            currentSortOption = "popular";
+            loadMovieData();
             return true;
         } else if (itemSelectedId == R.id.sort_rating) {
-            Toast.makeText(this, "SORT BY RATING SELECTED!!", Toast.LENGTH_LONG).show();
+            currentSortOption = "top_rated";
+            loadMovieData();
             return true;
         }
 
@@ -98,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private void loadMovieData() {
         showMovieDataView();
 
-        new FetchMovieDataTask().execute();
+        new FetchMovieDataTask().execute(currentSortOption);
     }
 
 
@@ -113,7 +117,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         @Override
         protected String[] doInBackground(String... params) {
 
-            URL callingUrl = NetworkUtils.buildUrl();
+            if (params.length == 0) {
+                return null;
+            }
+
+            String searchType = params[0];
+            URL callingUrl = NetworkUtils.buildUrl(searchType);
 
             try {
                 String returnData = NetworkUtils.getResponseFromHttpUrl(callingUrl);

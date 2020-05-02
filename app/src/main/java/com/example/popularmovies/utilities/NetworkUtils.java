@@ -16,12 +16,22 @@ public class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    private static final String BASE_URL = "http://api.themoviedb.org/3/movie/popular";
+    private static final String BASE_URL = "http://api.themoviedb.org/3/movie/";
+    private static final String POPULAR = "popular";
+    private static final String TOP_RATED = "top_rated";
     private static final String API_KEY = BuildConfig.API_KEY;
 
     //URI builder
-    public static URL buildUrl() {
-        Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+    public static URL buildUrl(String searchType) {
+        String finalUrl = null;
+
+        if (searchType == POPULAR) {
+            finalUrl = BASE_URL + POPULAR;
+        } else if (searchType == TOP_RATED) {
+            finalUrl = BASE_URL + TOP_RATED;
+        }
+
+        Uri builtUri = Uri.parse(finalUrl).buildUpon()
                 .appendQueryParameter("api_key", API_KEY)
                 .build();
 
