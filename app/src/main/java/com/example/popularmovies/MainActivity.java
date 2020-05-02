@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private RecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
     private TextView mErrorMessageDisplay;
+    private ProgressBar mLoadingIndicator;
 
     private String currentSortOption = "";
 
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_movies);
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
 
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setAdapter(mMovieAdapter);
 
         currentSortOption = "popular"; //default
+        this.setTitle("Popular Movies - Sort:Popular");
         loadMovieData();
     }
 
@@ -63,10 +67,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         int itemSelectedId = item.getItemId();
 
         if (itemSelectedId == R.id.sort_popular) {
+            this.setTitle("Popular Movies - Sort:Popular");
             currentSortOption = "popular";
             loadMovieData();
             return true;
         } else if (itemSelectedId == R.id.sort_rating) {
+            this.setTitle("Popular Movies - Sort:Top Rated");
             currentSortOption = "top_rated";
             loadMovieData();
             return true;
@@ -112,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mLoadingIndicator.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -138,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         @Override
         protected void onPostExecute(String[] popularMovie) {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (popularMovie != null) {
                 showMovieDataView();
 
